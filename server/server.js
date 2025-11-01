@@ -15,7 +15,7 @@ const app = express();
 
 // CORS configuration - enable credentials and whitelist frontend origin
 const corsOptions = {
-  origin: process.env.CLIENT_URL || 'http://localhost:3000',
+  origin: process.env.CLIENT_URL || "https://book-swap-zeta.vercel.app" || 'http://localhost:3000',
   credentials: true,
   optionsSuccessStatus: 200,
 };
