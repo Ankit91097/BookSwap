@@ -1,9 +1,9 @@
-const express = require('express');
-const dotenv = require('dotenv');
-const cookieParser = require('cookie-parser');
-const cors = require('cors');
-const connectDB = require('./config/db');
-const { errorHandler } = require('./middleware/errorMiddleware');
+const express = require("express");
+const dotenv = require("dotenv");
+const cookieParser = require("cookie-parser");
+const cors = require("cors");
+const connectDB = require("./config/db");
+const { errorHandler } = require("./middleware/errorMiddleware");
 
 // Load environment variables
 dotenv.config();
@@ -15,7 +15,12 @@ const app = express();
 
 // CORS configuration - enable credentials and whitelist frontend origin
 const corsOptions = {
-  origin: process.env.CLIENT_URL || "https://book-swap-zeta.vercel.app" || 'http://localhost:3000',
+  origin: [
+    process.env.CLIENT_URL || "http://localhost:3000",
+    "https://book-swap-zeta.vercel.app",
+    "http://localhost:3000",
+    "http://localhost:5173",
+  ],
   credentials: true,
   optionsSuccessStatus: 200,
 };
@@ -30,19 +35,19 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // Routes
-const authRoutes = require('./routes/authRoutes');
-const bookRoutes = require('./routes/bookRoutes');
-const requestRoutes = require('./routes/requestRoutes');
+const authRoutes = require("./routes/authRoutes");
+const bookRoutes = require("./routes/bookRoutes");
+const requestRoutes = require("./routes/requestRoutes");
 
 // Basic route
-app.get('/', (req, res) => {
-  res.json({ message: 'BookSwap API' });
+app.get("/", (req, res) => {
+  res.json({ message: "BookSwap API" });
 });
 
 // Mount routes
-app.use('/api/auth', authRoutes);
-app.use('/api/books', bookRoutes);
-app.use('/api/requests', requestRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/books", bookRoutes);
+app.use("/api/requests", requestRoutes);
 
 // Error handling middleware (must be last)
 app.use(errorHandler);
