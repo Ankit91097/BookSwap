@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getCurrentUser } from './features/auth/authSlice';
 import Navbar from './components/Navbar';
 import PrivateRoute from './components/PrivateRoute';
@@ -16,11 +16,14 @@ import ReceivedRequests from './features/requests/ReceivedRequests';
 
 function App() {
   const dispatch = useDispatch();
+  const { user, isLoading } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    // Restore auth state on app mount
-    dispatch(getCurrentUser());
-  }, [dispatch]);
+    // Only restore auth state on initial app mount if user is not already loaded
+    if (!user && !isLoading) {
+      dispatch(getCurrentUser());
+    }
+  }, []); // Empty dependency array - only run once on mount
 
   return (
     <Router>

@@ -30,9 +30,9 @@ apiClient.interceptors.response.use(
   (error) => {
     // Handle common errors
     if (error.response?.status === 401) {
-      // Handle unauthorized access
-      // Clear any auth-related cookies by making a logout request or redirect
-      window.location.href = "/login";
+      // Handle unauthorized access - let the component handle the redirect
+      // Don't force a hard redirect here as it can interfere with React Router
+      console.log('Unauthorized access - token may be expired');
     }
     return Promise.reject(error);
   }

@@ -59,6 +59,12 @@ export const getCurrentUser = createAsyncThunk(
   'auth/getCurrentUser',
   async (_, thunkAPI) => {
     try {
+      // Check if already loading to prevent duplicate calls
+      const { auth } = thunkAPI.getState();
+      if (auth.isLoading) {
+        return thunkAPI.rejectWithValue('Already loading user data');
+      }
+
       return await authService.getCurrentUser();
     } catch (error) {
       const message =
