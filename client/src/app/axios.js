@@ -13,11 +13,8 @@ const apiClient = axios.create({
 // Request interceptor
 apiClient.interceptors.request.use(
   (config) => {
-    // Add auth token if available
-    const token = localStorage.getItem('token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
+    // Token is automatically sent via cookies due to withCredentials: true
+    // No need to manually add Authorization header
     return config;
   },
   (error) => {
@@ -34,10 +31,9 @@ apiClient.interceptors.response.use(
     // Handle common errors
     if (error.response?.status === 401) {
       // Handle unauthorized access
-      localStorage.removeItem('token');
+      // Clear any auth-related cookies by making a logout request or redirect
       window.location.href = '/login';
     }
     return Promise.reject(error);
   }
 );
-export default apiClient;
